@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as categoriasService from '../../services/categorias/categoriasService'
 import { Link } from 'react-router-dom';
 

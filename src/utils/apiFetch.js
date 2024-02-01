@@ -8,14 +8,14 @@ const apiFetch = () => {
     const instance = axios.create({
         baseURL : BASE_URL,
         headers : {
-            'Content-Type': 'application/json'    
+            'Content-Type': 'application/json'
         }
     })
 
     if(token){
         instance.defaults.headers['Authorization'] = `Bearer ${token}`;
     }
-    
+
     return instance;
 
 }

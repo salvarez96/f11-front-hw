@@ -1,6 +1,6 @@
 import  apiFetch from "../../utils/apiFetch"
 
-const intentLogin = async (payload) => {    
+const intentLogin = async (payload) => {
 
     try {
         const {data} = await apiFetch().post('/usuarios/login', payload);
@@ -8,7 +8,6 @@ const intentLogin = async (payload) => {
     } catch (error) {
         return Promise.reject(error)
     }
-
 }
 
 export {
