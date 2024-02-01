@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Tooltip } from "bootstrap";
 import { registerUser } from "../../services/registration/registrationService";
+import AlertMessenger from "../../components/alertMessenger.jsx";
 
 const UsuariosPage = () => {
 
@@ -31,15 +32,17 @@ const UsuariosPage = () => {
     }
 
     const handleUserRegistration = async () => {
-        await registerUser(userData)
-            .then(() => setApiResponse({
-                status: 201,
-                message: 'Usuario creado satisfactoriamente'
-            }))
-            .catch((data) => setApiResponse({
-                status: data.response.status,
-                message: data.response.data.message
-            }))
+        if (Object.keys(userData).length === 5) {
+            await registerUser(userData)
+                .then(() => setApiResponse({
+                    status: 201,
+                    message: 'Usuario creado satisfactoriamente'
+                }))
+                .catch((data) => setApiResponse({
+                    status: data.response.status,
+                    message: data.response.data.message
+                }))
+        }
     }
 
     return(
@@ -59,6 +62,7 @@ const UsuariosPage = () => {
                     </div>
                     <button className='btn btn-primary' type="button" onClick={handleUserRegistration}>Crear usuario</button>
                 </form>
+                <AlertMessenger statusCode={apiResponse.status} messageContent={apiResponse.message} />
             </div>
         </div>
     )
