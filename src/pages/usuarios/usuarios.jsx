@@ -39,10 +39,14 @@ const UsuariosPage = () => {
         e.preventDefault()
         if (Object.keys(userData).length === 5) {
             await registerUser(userData)
-                .then(() => setApiResponse({
-                    status: 201,
-                    message: 'Usuario creado satisfactoriamente'
-                }))
+                .then(() => {
+                    [...e.target.elements].forEach(node => node.value = '')
+                    setApiResponse({
+                        status: 201,
+                        message: 'Usuario creado satisfactoriamente'
+                    })
+                    setUserData({})
+                })
                 .catch(({response}) => setApiResponse({
                     status: response.status,
                     message: response.data.message
@@ -55,7 +59,7 @@ const UsuariosPage = () => {
         <div className='container'>
             <div className='col d-flex justify-content-center align-items-center m-5 flex-column'>
                 <h2 className='mb-5'>Crea tu usuario</h2>
-                <form action="" className='w-50' style={{minWidth: '300px'}}>
+                <form action="" className='w-50' style={{minWidth: '300px'}} onSubmit={(e) => handleUserRegistration(e)}>
                     <div className='mb-3'>
                         <label htmlFor="nombres" className='form-label'>Nombres: </label>
                         <input type="text" name="nombres" id="nombres" className='form-control mb-3' onChange={(e) => handleUserInfo(e)} required />
@@ -66,7 +70,7 @@ const UsuariosPage = () => {
                         <label htmlFor="clave" className='form-label'>Password: </label>
                         <input type="password" name="clave" id="clave" className='form-control mb-3' onChange={(e) => handleUserInfo(e)} required />
                     </div>
-                    <button className='btn btn-primary' type="submit" onClick={(e) => handleUserRegistration(e)} disabled={activateSubmitButton}>Crear usuario</button>
+                    <button className='btn btn-primary' type="submit" disabled={activateSubmitButton}>Crear usuario</button>
                 </form>
                 <AlertMessenger statusCode={apiResponse.status} messageContent={apiResponse.message} />
                 {apiResponse.status >= 200 &&
