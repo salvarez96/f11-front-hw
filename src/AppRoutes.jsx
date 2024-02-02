@@ -4,7 +4,7 @@ import CategoriasPage from "./pages/categorias/categorias";
 import ProductosPage from "./pages/productos/productos";
 import ClientesPage from "./pages/clientes/clientes";
 import PedidosPage from "./pages/pedidos/pedidos";
-import LoginPage from "./pages/login/login";
+// import LoginPage from "./pages/login/login";
 import UsuariosPage from "./pages/usuarios/usuarios";
 import MainLayout from "./layouts/main-layout";
 import ReduxDemoPage from './pages/redux-demo/redux-demo'
@@ -58,10 +58,10 @@ import VerCategoriasPage from "./pages/categorias/ver/verCategorias";
         }
       ]
     },
-    {
-      path: "/login",
-      element: <LoginPage/>,
-    }
+    // {
+    //   path: "/login",
+    //   element: <LoginPage/>,
+    // }
   ]);
 
 export default router;
