@@ -8,3 +8,12 @@ export const registerClient = async (payload) => {
       return Promise.reject(error)
   }
 }
+
+export const getClients = async (payload) => {
+  try {
+    const {data} = await apiFetch().get('/clientes', payload);
+    return data;
+  } catch (error) {
+      return Promise.reject(error)
+  }
+}
