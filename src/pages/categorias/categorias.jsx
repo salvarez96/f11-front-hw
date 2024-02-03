@@ -22,7 +22,7 @@ const CategoriasPage = () => {
     return(
         <div className='container'>
             <div className='row'>
-                <h3>Lista de categorias</h3>
+                <h2 className='my-5 text-center'>Lista de categorias</h2>
             </div>
             <div className='row'>
                 <div className='col-lg-12'>
@@ -34,16 +34,17 @@ const CategoriasPage = () => {
                                 <th>Opciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {categorias.length > 0 && categorias.map((data)=>(
-                                <tr key={data}>
-                                    <td>{data.id}</td>
-                                    <td>{data.nombre}</td>
-                                    <td><Link className="btn btn-success" to={"/categorias/"+data.id}>Editar</Link></td>
+                        <tbody className='table-group-divider'>
+                            {categorias.length > 0 && categorias.map((category)=>(
+                                <tr key={category}>
+                                    <td>{category.id}</td>
+                                    <td>{category.nombre}</td>
+                                    <td><Link className="btn btn-success" to={"/categorias/"+category.id}>Editar</Link></td>
                                 </tr>
                             ))}
                         </tbody>
                         </table>
+                        <Link className="btn btn-secondary" to={"/categorias/new"} >Agregar categoría</Link>
                 </div>
             </div>
 

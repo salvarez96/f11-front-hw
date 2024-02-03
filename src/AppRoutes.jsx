@@ -11,6 +11,7 @@ import ReduxDemoPage from './pages/redux-demo/redux-demo'
 import ContactoStepManualPage from "./pages/contacto/step-manual";
 import ContactoStepReduxPage from "./pages/contacto/step-redux";
 import VerCategoriasPage from "./pages/categorias/ver/verCategorias";
+import AddCategory from "./pages/categorias/ver/agregarCategoria";
   const router = createBrowserRouter([
     {
       path: "/",
@@ -27,6 +28,10 @@ import VerCategoriasPage from "./pages/categorias/ver/verCategorias";
         {
           path: "/categorias/:id",
           element: <VerCategoriasPage/>,
+        },
+        {
+          path: "/categorias/new",
+          element: <AddCategory/>,
         },
         {
           path: "/productos",
