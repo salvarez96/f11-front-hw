@@ -4,7 +4,7 @@ const clientFormSlice = createSlice({
   name: 'clientFormSlice',
   initialState: {
     clientData: {
-      tipoDocumento: null,
+      tipoDocumento: 'CC',
       noDocumento: null,
       edad: null,
       nombres: null,
