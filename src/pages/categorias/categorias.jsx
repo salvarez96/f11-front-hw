@@ -35,8 +35,8 @@ const CategoriasPage = () => {
                             </tr>
                         </thead>
                         <tbody className='table-group-divider'>
-                            {categorias.length > 0 && categorias.map((category)=>(
-                                <tr key={category}>
+                            {categorias.length > 0 && categorias.map((category, i)=>(
+                                <tr key={i}>
                                     <td>{category.id}</td>
                                     <td>{category.nombre}</td>
                                     <td><Link className="btn btn-success" to={"/categorias/"+category.id}>Editar</Link></td>

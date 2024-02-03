@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { PostCategorias } from "../../../services/categorias/categoriasService"
 import AlertMessenger from "../../../components/alertMessenger";
 import { Link } from "react-router-dom";
+import { handleFormService } from "../../../services/form/formService";
 
 function AddCategory() {
 
@@ -20,11 +21,7 @@ function AddCategory() {
   }, [newCategory])
 
   const handleCategoryInfo = (e) => {
-    const {name, value} = e.target
-    setNewCategory({
-      ...newCategory,
-      ...{[name]: value}
-    })
+    handleFormService(e, newCategory, setNewCategory)
   }
 
   const handleNewCategory = async (e) => {
