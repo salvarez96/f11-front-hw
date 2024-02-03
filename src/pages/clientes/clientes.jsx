@@ -3,6 +3,7 @@ import AddClientes from '../../components/clientes/addClientes';
 import { getClients } from '../../services/clientes/clientesService';
 import CustomButton from '../../components/helpers/customButton';
 import EditClientes from '../../components/clientes/editClientes';
+import DeleteClientes from '../../components/clientes/deleteClientes';
 
 const ClientesPage = () => {
 
@@ -10,10 +11,11 @@ const ClientesPage = () => {
     const [clientList, setClientList] = useState([])
     const [addClientesComponent, setAddClientesComponent] = useState(false)
     const [editClientesComponent, setEditClientesComponent] = useState(false)
+    const [toggleDeleteClient, setToggleDeleteClient] = useState(false)
 
     useEffect(() => {
         getClientList()
-    }, [addClientesComponent, editClientesComponent])
+    }, [addClientesComponent, editClientesComponent, toggleDeleteClient])
 
     const getClientList = async () => {
         const clientList = await getClients()
@@ -23,6 +25,11 @@ const ClientesPage = () => {
     const handleEditButton = (clientId) => {
         setClientId(clientId)
         setEditClientesComponent(true)
+    }
+
+    const handleDeleteButton = (clientId) => {
+        setClientId(clientId)
+        setToggleDeleteClient(true)
     }
 
     return(
@@ -36,6 +43,7 @@ const ClientesPage = () => {
                         <th scope='col'>Nombres</th>
                         <th scope='col'>Apellidos</th>
                         <th scope='col'>Correo</th>
+                        <th scope='col'>Documento</th>
                         <th scope='col'>Dirección</th>
                         <th scope='col'>Ciudad</th>
                         <th scope='col'>Notas</th>
@@ -49,6 +57,7 @@ const ClientesPage = () => {
                             <td>{client.nombres}</td>
                             <td>{client.apellidos}</td>
                             <td>{client.correo}</td>
+                            <td>{client.noDocumento}</td>
                             <td>{client.direccion}</td>
                             <td>{client.ciudad}</td>
                             <td>{client.notas}</td>
@@ -63,7 +72,9 @@ const ClientesPage = () => {
                                     buttonClassVariant="danger"
                                     buttonType="delete"
                                     textAid="Eliminar cliente"
-                                    // onClick
+                                    dataBsToggle="modal"
+                                    dataBsTarget="#deleteClientModal"
+                                    onClick={() => handleDeleteButton(client.id)}
                                 />
                             </td>
                         </tr>
@@ -75,6 +86,11 @@ const ClientesPage = () => {
             }
             {addClientesComponent && <AddClientes setAddClientesComponent={setAddClientesComponent} />}
             {editClientesComponent && <EditClientes setEditClientesComponent={setEditClientesComponent} clientId={clientId} />}
+            <DeleteClientes
+                clientId={clientId}
+                searchClientToDelete={toggleDeleteClient}
+                setToggleDeleteClient={setToggleDeleteClient}
+            />
         </div>
     )
 }
