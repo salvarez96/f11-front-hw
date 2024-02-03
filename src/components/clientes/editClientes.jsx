@@ -1,16 +1,42 @@
 import { useDispatch, useSelector } from "react-redux"
 import { setClientFormAction } from "../../redux/slices/clientFormSlice"
-import { registerClient } from "../../services/clientes/clientesService"
+import { editClient, getClient } from "../../services/clientes/clientesService"
 import AlertMessenger from "../alertMessenger"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
-function AddClientes(props) {
+function EditClientes(props) {
 
-  const {setAddClientesComponent} = props
+  const {setEditClientesComponent, clientId} = props
 
+  const formRef = useRef(null)
   const state = useSelector((state) => state.clientFormStore)
   const dispatch = useDispatch()
   const [apiResponse, setApiResponse] = useState({})
+
+  useEffect(() => {
+    getClientInfo()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const getClientInfo = async () => {
+    await getClient(clientId)
+      .then(clientData => {
+        [...formRef.current.elements].forEach((node) => {
+          if (clientData[node.name]) {
+            node.type !== 'radio'
+              ? node.value = clientData[node.name]
+              : node.id === clientData[node.name] ? node.checked = true : ''
+          }
+          dispatch(setClientFormAction({id: clientData.id, ...clientData}))
+        })
+      })
+      .catch(({response}) => {
+        setApiResponse({
+          status: response.status ?? 500,
+          message: response.data.message ?? 'Error del servidor'
+        })
+      })
+  }
 
   const handleClientInfo = (e) => {
     let {name, value} = e.target
@@ -19,15 +45,14 @@ function AddClientes(props) {
     dispatch(setClientFormAction(payload))
   }
 
-  const handleClientRegistraton = async (e) => {
+  const handleClientUpdate = async (e) => {
     e.preventDefault()
     dispatch(setClientFormAction({edad: Number(state.clientData.edad)}))
-    await registerClient(state.clientData)
+    await editClient(state.clientData, state.clientData.id)
       .then(() => {
-        [...e.target.elements].forEach(node => node.value = '')
         setApiResponse({
           status: 200,
-          message: 'Cliente agregado exitosamente'
+          message: 'Cliente editado exitosamente'
         })
       })
       .catch(({response}) => {
@@ -41,8 +66,8 @@ function AddClientes(props) {
   return (
     <div className='container'>
         <div className='col d-flex justify-content-center align-items-center m-5 flex-column'>
-            <h2 className='mb-5'>Agrega un nuevo cliente</h2>
-            <form action="" className='w-50' style={{minWidth: '300px'}} onSubmit={(e) => handleClientRegistraton(e)}>
+            <h2 className='mb-5'>Edita los datos del cliente</h2>
+            <form action="" className='w-50' style={{minWidth: '300px'}} ref={formRef} onSubmit={(e) => handleClientUpdate(e)}>
                 <div className='mb-3'>
                     <label htmlFor="nombres" className='form-label'>Nombres: </label>
                     <input type="text" name="nombres" id="nombres" className='form-control mb-3' onChange={(e) => handleClientInfo(e)} required />
@@ -84,8 +109,8 @@ function AddClientes(props) {
                     <input type="text" name="notas" id="notas" className='form-control mb-3' onChange={(e) => handleClientInfo(e)} required />
                 </div>
                 <div className='d-flex justify-content-around align-items-center gap-2'>
-                  <button className='btn btn-primary' type="submit">Agregar cliente</button>
-                  <button className='btn btn-light' type="button" onClick={() => setAddClientesComponent(false)}>Volver</button>
+                  <button className='btn btn-primary' type="submit">Editar cliente</button>
+                  <button className='btn btn-light' type="button" onClick={() => setEditClientesComponent(false)}>Volver</button>
                 </div>
             </form>
             <AlertMessenger statusCode={apiResponse.status} messageContent={apiResponse.message} />
@@ -94,6 +119,6 @@ function AddClientes(props) {
   )
 }
 
-AddClientes.propTypes
+EditClientes.propTypes
 
-export default AddClientes
+export default EditClientes
