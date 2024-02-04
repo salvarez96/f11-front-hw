@@ -7,10 +7,11 @@ function DeleteCategory(props) {
   const {categoryId, searchCategoryToDelete, setToggleDeleteCategory} = props
 
   const [apiResponse, setApiResponse] = useState({})
+  const [category, setCategory] = useState(categoryId)
   const [categoryData, setCategoryData] = useState({})
 
   useEffect(() => {
-    if (categoryId > 0)
+    if (categoryId > 0 && category > 0)
       getCategoryData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, searchCategoryToDelete])
@@ -35,7 +36,7 @@ function DeleteCategory(props) {
           status: 200,
           message: 'Categoría eliminada'
         })
-        console.log(categoryData);
+        setCategory(0)
       })
       .catch(({response}) => {
         setApiResponse({

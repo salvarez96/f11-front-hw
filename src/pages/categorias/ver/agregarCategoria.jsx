@@ -3,6 +3,8 @@ import { PostCategorias } from "../../../services/categorias/categoriasService"
 import AlertMessenger from "../../../components/alertMessenger";
 import { Link } from "react-router-dom";
 import { handleFormService } from "../../../services/form/formService";
+import { createFakeProducts } from "../../../services/faker/createFakeProducts";
+import { registerProduct } from "../../../services/productos/productosService";
 
 function AddCategory() {
 
@@ -20,6 +22,15 @@ function AddCategory() {
     )
   }, [newCategory])
 
+  useEffect(() => {
+    async function fetchData() {
+      if (apiResponse.status === 200)
+        await createProducts()
+    }
+    fetchData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiResponse])
+
   const handleCategoryInfo = (e) => {
     handleFormService(e, newCategory, setNewCategory)
   }
@@ -27,17 +38,33 @@ function AddCategory() {
   const handleNewCategory = async (e) => {
     e.preventDefault()
     await PostCategorias(newCategory)
-      .then(() => {
+      .then((data) => {
         [...e.target.elements].forEach(node => node.value = '')
         setApiResponse({
           status: 200,
-          message: 'Categoría creada exitosamente'
+          message: 'Categoría creada exitosamente',
+          categoryId: data.id
         })
       })
       .catch(({response}) => setApiResponse({
         status: response.status ?? 500,
         message: response.data.message ?? 'Error en el servidor'
-      }))
+      }));
+  }
+
+  const createProducts = async () => {
+    if (apiResponse.status === 200) {
+      const products = await createFakeProducts(4, 'food', apiResponse.categoryId)
+      
+      products.forEach(async (product) => {
+        try {
+          registerProduct(product)
+          console.log('Productos registrados con éxito');
+        } catch (error) {
+          console.log(error);
+        }
+      })
+    }
   }
 
   return (
