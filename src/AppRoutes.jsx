@@ -34,7 +34,7 @@ import AddCategory from "./pages/categorias/ver/agregarCategoria";
           element: <AddCategory/>,
         },
         {
-          path: "/productos",
+          path: "/productos/:categoryName?",
           element: <ProductosPage/>,
         },
         {
