@@ -12,6 +12,7 @@ import ContactoStepManualPage from "./pages/contacto/step-manual";
 import ContactoStepReduxPage from "./pages/contacto/step-redux";
 import VerCategoriasPage from "./pages/categorias/ver/verCategorias";
 import AddCategory from "./pages/categorias/ver/agregarCategoria";
+import CreatePedido from "./pages/pedidos/createPedido";
   const router = createBrowserRouter([
     {
       path: "/",
@@ -40,6 +41,10 @@ import AddCategory from "./pages/categorias/ver/agregarCategoria";
         {
           path: "/pedidos",
           element: <PedidosPage/>,
+        },
+        {
+          path: "/pedidos/agregar/:step?",
+          element: <CreatePedido/>,
         },
         {
           path: "/usuarios",
